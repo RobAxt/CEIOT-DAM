@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/">
+          <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+  </ion-buttons>
+  <ion-title>Dispositivo: {{dispositivo.nombre}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div id="highcharts" style="width:100%; height:100%;"></div>
+      </ion-col>
+
+      <ion-col>
+        <ion-row>
+          <ion-button expand="full" shape="round" (click)="cambiarEstadoElectrovalvula()">
+            <p *ngIf="!estadoElectrovalvula"> Abrir Electroválvula</p>
+            <p *ngIf="estadoElectrovalvula" > Cerrar Electroválvula</p>
+            <ion-icon slot="end" name="caret-forward"></ion-icon>
+          </ion-button>
+        </ion-row>
+        <ion-row>
+          <ion-button expand="full" shape="round">
+            <p>Ver todas las Mediciones</p>
+            <ion-icon slot="end" name="caret-forward"></ion-icon>
+          </ion-button>
+        </ion-row>
+        <ion-row>
+          <ion-button expand="full" shape="round">
+            <p>Ver todos los Logs</p>
+            <ion-icon slot="end" name="caret-forward"></ion-icon>
+          </ion-button>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+
+</ion-content>
