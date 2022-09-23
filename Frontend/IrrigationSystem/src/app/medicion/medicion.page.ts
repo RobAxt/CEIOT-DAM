@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Dispositivo } from '../model/Dispositivo';
 import { DispositivoService } from '../services/dispositivo.service';
+import { MedicionService } from '../services/medicion.service';
+import { Medicion } from '../model/Medicion';
 
 @Component({
   selector: 'app-medicion',
@@ -11,12 +13,14 @@ import { DispositivoService } from '../services/dispositivo.service';
 export class MedicionPage implements OnInit {
 
   public dispositivo: Dispositivo;
+  public mediciones:  Array<Medicion>;
 
-  constructor(private router: ActivatedRoute, private dServ: DispositivoService) { }
+  constructor(private router: ActivatedRoute, private dServ: DispositivoService, private medServ: MedicionService) { }
 
   ngOnInit() {
     let idDispositivo = this.router.snapshot.paramMap.get('id');
     this.dispositivo = this.dServ.getDispositivo(idDispositivo);
+    this.mediciones = this.medServ.getMedicionDispositivo(idDispositivo);
   }
 
 }

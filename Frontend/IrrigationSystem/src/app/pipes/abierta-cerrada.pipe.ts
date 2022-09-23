@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class AbiertaCerradaPipe implements PipeTransform {
 
-  transform(value: boolean): string {
+  transform(value: number): string {
     return value? "ABIERTA":"CERRADA";
   }
 

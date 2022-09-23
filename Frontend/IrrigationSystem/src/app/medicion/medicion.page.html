@@ -15,5 +15,28 @@
 </ion-header>
 
 <ion-content>
+  <ion-grid class="ion-text-center">
+    <ion-row class="header-row">
+      <ion-col>
+        <ion-text>Fecha</ion-text>
+      </ion-col>
+      <ion-col>
+        <ion-text> Valor </ion-text>
+      </ion-col>
+    </ion-row>
 
+    <ion-row *ngFor="let med of mediciones">
+      <ion-col>
+        <ion-text>
+          {{med.fecha}}
+        </ion-text>
+      </ion-col>
+      <ion-col>
+        <ion-text>
+          {{med.valor | unidad:"Presion"}}
+        </ion-text>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
+

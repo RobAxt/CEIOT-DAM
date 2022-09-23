@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { LogPageRoutingModule } from './log-routing.module';
 
 import { LogPage } from './log.page';
+import { AbiertaCerradaPipe } from '../pipes/abierta-cerrada.pipe';
 
 @NgModule({
   imports: [
@@ -15,6 +16,9 @@ import { LogPage } from './log.page';
     IonicModule,
     LogPageRoutingModule
   ],
-  declarations: [LogPage]
+  declarations: [
+    LogPage,
+    AbiertaCerradaPipe
+  ]
 })
 export class LogPageModule {}

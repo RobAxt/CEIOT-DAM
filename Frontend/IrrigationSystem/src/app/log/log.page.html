@@ -15,5 +15,27 @@
 </ion-header>
 
 <ion-content>
+  <ion-grid class="ion-text-center">
+    <ion-row class="header-row">
+      <ion-col>
+        <ion-text>Fecha</ion-text>
+      </ion-col>
+      <ion-col>
+        <ion-text> Estado </ion-text>
+      </ion-col>
+    </ion-row>
 
+    <ion-row *ngFor="let lg of logs">
+      <ion-col>
+        <ion-text>
+          {{lg.fecha}}
+        </ion-text>
+      </ion-col>
+      <ion-col>
+        <ion-text>
+          {{lg.apertura | abiertaCerrada}}
+        </ion-text>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

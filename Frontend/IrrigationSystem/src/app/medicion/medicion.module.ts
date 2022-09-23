@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { MedicionPageRoutingModule } from './medicion-routing.module';
 
 import { MedicionPage } from './medicion.page';
+import { UnidadPipe } from '../pipes/unidad.pipe';
 
 @NgModule({
   imports: [
@@ -15,6 +16,8 @@ import { MedicionPage } from './medicion.page';
     IonicModule,
     MedicionPageRoutingModule
   ],
-  declarations: [MedicionPage]
+  declarations: [
+    MedicionPage,
+    UnidadPipe]
 })
 export class MedicionPageModule {}

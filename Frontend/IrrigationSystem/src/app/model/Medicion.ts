@@ -4,7 +4,7 @@ export class Medicion{
   private _valor: number;
   private _dispositivoId: number;
 
-  constructor(medicion,fecha,valor,dispositivoId){
+  constructor(medicion: number, fecha: Date, valor: number, dispositivoId: number){
       this._medicionId=medicion;
       this.fecha=fecha;
       this._valor=valor;
