@@ -1,6 +1,18 @@
 version: '3'
 
 services:
+
+    mysql-server:
+        image:                   mysql:5.7
+        hostname:                mysql-server
+        environment:
+            MYSQL_ROOT_PASSWORD: userpass
+        volumes:
+            -                    ./db/dumps:/docker-entrypoint-initdb.d
+            -                    ./db/data:/var/lib/mysql
+        networks:
+            -                    app-fullstack-net
+
     mysql-admin:
         image:                   phpmyadmin/phpmyadmin
         environment: 
@@ -17,8 +29,7 @@ services:
     node-backend:
         image:                   abassi/nodejs-server:10.0-dev
         volumes:
-            -                    ./src/backend:/home/node/app/src
-            -                    ./src/frontend:/home/node/app/static
+            -                    ./index:/home/node/app/src
         networks:
             -                    app-fullstack-net
         depends_on:
