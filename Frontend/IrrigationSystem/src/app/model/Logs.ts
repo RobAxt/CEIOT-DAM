@@ -4,8 +4,8 @@ export class Logs{
   private _apertura: number;
   private _electrovalvulaId: number;
 
-  constructor(Logs,fecha,apertura,electrovalvulaId){
-      this._logRiegoId=Logs;
+  constructor(logId: number, fecha: Date, apertura: number, electrovalvulaId: number){
+      this._logRiegoId=logId;
       this._fecha=fecha;
       this._apertura=apertura;
       this._electrovalvulaId=electrovalvulaId;

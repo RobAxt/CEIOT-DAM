@@ -5,6 +5,7 @@ import { DispositivoService } from '../services/dispositivo.service';
 import * as Highcharts from 'highcharts';
 import { LogsService } from '../services/logs.service';
 import { Logs } from '../model/Logs';
+import { ElectrovalvulaService } from '../services/electrovalvula.service';
 declare var require: any;
 require('highcharts/highcharts-more')(Highcharts);
 require('highcharts/modules/solid-gauge')(Highcharts);
@@ -22,7 +23,7 @@ export class DispositivoPage implements OnInit {
   public myChart;
   private chartOptions;
 
-  constructor(private router: ActivatedRoute, private dServ: DispositivoService, private lServ: LogsService) {
+  constructor(private router: ActivatedRoute, private dServ: DispositivoService, private lServ: LogsService, private evServ: ElectrovalvulaService) {
     setTimeout(()=>{
       console.log("Cambio el valor del sensor");
       this.valorObtenido=60;
@@ -53,6 +54,7 @@ export class DispositivoPage implements OnInit {
     // eslint-disable-next-line prefer-const
     let idDispositivo = this.router.snapshot.paramMap.get('id');
     this.dispositivo = this.dServ.getDispositivo(idDispositivo);
+    this.estadoElectrovalvula = Boolean(this.evServ.getEstadoActualEV(this.dispositivo.electrovalvulaId));
     console.log('Id: ' + idDispositivo);
     console.log('Dispositivo Nombre: ' + this.dispositivo.nombre);
   }
@@ -64,7 +66,7 @@ export class DispositivoPage implements OnInit {
   cambiarEstadoElectrovalvula() {
     this.estadoElectrovalvula = !this.estadoElectrovalvula;
     console.log('Estado de la Electrovalvula del dispositovo' + this.dispositivo.nombre + ' es ' + this.estadoElectrovalvula);
-    let log: Logs = new Logs(0, new Date, this.estadoElectrovalvula,this.dispositivo.electrovalvulaId);
+    let log: Logs = new Logs(0, new Date, Number(this.estadoElectrovalvula), this.dispositivo.electrovalvulaId);
     this.lServ.newEntrada(log);
   }
 
