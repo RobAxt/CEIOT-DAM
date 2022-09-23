@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Dispositivo } from '../model/Dispositivo';
 import { DispositivoService } from '../services/dispositivo.service';
 import * as Highcharts from 'highcharts';
+import { LogsService } from '../services/logs.service';
+import { Logs } from '../model/Logs';
 declare var require: any;
 require('highcharts/highcharts-more')(Highcharts);
 require('highcharts/modules/solid-gauge')(Highcharts);
@@ -20,7 +22,7 @@ export class DispositivoPage implements OnInit {
   public myChart;
   private chartOptions;
 
-  constructor(private router: ActivatedRoute, private dServ: DispositivoService) {
+  constructor(private router: ActivatedRoute, private dServ: DispositivoService, private lServ: LogsService) {
     setTimeout(()=>{
       console.log("Cambio el valor del sensor");
       this.valorObtenido=60;
@@ -62,6 +64,8 @@ export class DispositivoPage implements OnInit {
   cambiarEstadoElectrovalvula() {
     this.estadoElectrovalvula = !this.estadoElectrovalvula;
     console.log('Estado de la Electrovalvula del dispositovo' + this.dispositivo.nombre + ' es ' + this.estadoElectrovalvula);
+    let log: Logs = new Logs(0, new Date, this.estadoElectrovalvula,this.dispositivo.electrovalvulaId);
+    this.lServ.newEntrada(log);
   }
 
   generarChart() {

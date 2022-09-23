@@ -8,6 +8,7 @@ import { LogPageRoutingModule } from './log-routing.module';
 
 import { LogPage } from './log.page';
 import { AbiertaCerradaPipe } from '../pipes/abierta-cerrada.pipe';
+import { ResaltarDirective } from '../directives/resaltar.directive';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { AbiertaCerradaPipe } from '../pipes/abierta-cerrada.pipe';
   ],
   declarations: [
     LogPage,
-    AbiertaCerradaPipe
+    AbiertaCerradaPipe,
+    ResaltarDirective
   ]
 })
 export class LogPageModule {}

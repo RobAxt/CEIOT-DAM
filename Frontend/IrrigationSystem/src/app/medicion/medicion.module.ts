@@ -8,6 +8,7 @@ import { MedicionPageRoutingModule } from './medicion-routing.module';
 
 import { MedicionPage } from './medicion.page';
 import { UnidadPipe } from '../pipes/unidad.pipe';
+import { ResaltarDirective } from '../directives/resaltar.directive';
 
 @NgModule({
   imports: [
@@ -18,6 +19,8 @@ import { UnidadPipe } from '../pipes/unidad.pipe';
   ],
   declarations: [
     MedicionPage,
-    UnidadPipe]
+    UnidadPipe,
+    ResaltarDirective
+  ]
 })
 export class MedicionPageModule {}

@@ -30,4 +30,7 @@ export class LogsService {
     return this.logs.filter(logs=> logs.electrovalvulaId==id);
   }
 
+  newEntrada(log: Logs) {
+    this.logs.push(log);
+  }
 }
