@@ -5,12 +5,8 @@ import { Medicion } from '../model/Medicion';
   providedIn: 'root'
 })
 export class MedicionService {
-  ultimaMedicion: Medicion = {
-    _medicionId : 0,
-    _fecha : new Date(),
-    _valor : 60,
-    _dispositivoId : 1
-  };
+  ultimaMedicion: Medicion =  new Medicion(0, new Date(), 60, 0);
+
   constructor() { }
 
   getUltimaMedicion():Medicion {

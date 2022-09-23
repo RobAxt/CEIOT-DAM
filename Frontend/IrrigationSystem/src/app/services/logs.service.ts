@@ -5,12 +5,7 @@ import { Logs } from '../model/Logs';
   providedIn: 'root'
 })
 export class LogsService {
-  public ultimoLog: Logs = {
-    _logRiegoId : 0,
-    _fecha : new Date(),
-    _apertura : true,
-    _electrovalvulaId : 0
-   };
+  public ultimoLog: Logs = new Logs(0,new Date(), true,0);
   constructor() { }
 
   getUltimoLog():Logs {
