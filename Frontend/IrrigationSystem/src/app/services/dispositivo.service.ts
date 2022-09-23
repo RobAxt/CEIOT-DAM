@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Dispositivo } from '../model/Dispositivo';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,7 @@ import { Dispositivo } from '../model/Dispositivo';
 export class DispositivoService {
   listadoDispositivo: Array<Dispositivo> = new Array<Dispositivo>();
 
-  constructor() {
+  constructor(private _http:HttpClient) {
     const disp: Dispositivo= new Dispositivo(1,'Sensor 1','Patio',1);
     const disp2: Dispositivo= new Dispositivo(2,'Sensor 2','Cocina',2);
     const disp3: Dispositivo= new Dispositivo(3,'Sensor 3','Jardin Delantero',3);
@@ -18,11 +19,11 @@ export class DispositivoService {
     this.listadoDispositivo.push(disp4);
   }
 
-  getDispositivo(id): Dispositivo{
-      return this.listadoDispositivo.filter(dispositivo=> dispositivo.dispositivoId==id)[0];
+  getDispositivo(id): Dispositivo {
+    return this.listadoDispositivo.filter(dispositivo=> dispositivo.dispositivoId==id)[0];
   }
 
-  getDispositivos() {
+  getDispositivos(): Dispositivo[] {
     return this.listadoDispositivo;
   }
 }

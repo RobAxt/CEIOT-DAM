@@ -12,6 +12,8 @@ app.use('/dispositivo', routerDisp);
 
 app.use('/medicion', routerMedicion);
 
+app.use('/log', routerLog);
+
 app.listen(PORT, function(req, res) {
     console.log("API Funcionando ");
 });
