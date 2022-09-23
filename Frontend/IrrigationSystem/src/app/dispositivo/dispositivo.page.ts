@@ -72,21 +72,18 @@ export class DispositivoPage implements OnInit {
           plotBackgroundImage: null,
           plotBorderWidth: 0,
           plotShadow: false,
-          height: '80%'
+          height: '300px'
         }
         ,title: {
           text: [this.dispositivo.nombre]
         }
-
         ,credits:{enabled:false}
-
-
         ,pane: {
             startAngle: -150,
             endAngle: 150,
 
             center: ['50%', '50%'],
-            size: '50%'
+            size: '100%'
         }
         // the value axis
       ,yAxis: {
@@ -126,7 +123,6 @@ export class DispositivoPage implements OnInit {
         }]
     }
     ,
-
     series: [{
         name: 'kPA',
         data: [this.valorObtenido],
@@ -134,7 +130,6 @@ export class DispositivoPage implements OnInit {
             valueSuffix: ' kPA'
         }
     }]
-
     };
     this.myChart = Highcharts.chart('highcharts', this.chartOptions );
   }

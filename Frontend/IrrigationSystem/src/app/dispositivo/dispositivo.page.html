@@ -10,36 +10,19 @@
 </ion-header>
 
 <ion-content>
-
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <div id="highcharts" style="width:100%; height:100%;"></div>
-      </ion-col>
-
-      <ion-col>
-        <ion-row>
-          <ion-button expand="full" shape="round" (click)="cambiarEstadoElectrovalvula()">
-            <p *ngIf="!estadoElectrovalvula"> Abrir Electroválvula</p>
-            <p *ngIf="estadoElectrovalvula" > Cerrar Electroválvula</p>
-            <ion-icon slot="end" name="caret-forward"></ion-icon>
-          </ion-button>
-        </ion-row>
-        <ion-row>
-          <ion-button expand="full" shape="round">
-            <p>Ver todas las Mediciones</p>
-            <ion-icon slot="end" name="caret-forward"></ion-icon>
-          </ion-button>
-        </ion-row>
-        <ion-row>
-          <ion-button expand="full" shape="round">
-            <p>Ver todos los Logs</p>
-            <ion-icon slot="end" name="caret-forward"></ion-icon>
-          </ion-button>
-        </ion-row>
-      </ion-col>
-    </ion-row>
-
-  </ion-grid>
-
+  <div id="highcharts" style="width: 100%; height: 300px;"></div>
+  <br>
+  <ion-button expand="block" shape="round" (click)="cambiarEstadoElectrovalvula()">
+    <p *ngIf="!estadoElectrovalvula"> Abrir Electroválvula</p>
+    <p *ngIf="estadoElectrovalvula" > Cerrar Electroválvula</p>
+    <ion-icon slot="end" name="caret-forward"></ion-icon>
+  </ion-button>
+  <ion-button expand="block" shape="round"  routerLink="/medicion/{{dispositivo.dispositivoId}}" >
+    <p >Ver todas las Mediciones</p>
+    <ion-icon slot="end" name="caret-forward"></ion-icon>
+  </ion-button>
+  <ion-button expand="block" shape="round" routerLink="/log/{{dispositivo.dispositivoId}}">
+    <p>Ver todos los Logs</p>
+    <ion-icon slot="end" name="caret-forward"></ion-icon>
+  </ion-button>
 </ion-content>
