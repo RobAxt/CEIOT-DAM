@@ -6,6 +6,7 @@ import * as Highcharts from 'highcharts';
 import { LogsService } from '../services/logs.service';
 import { Logs } from '../model/Logs';
 import { ElectrovalvulaService } from '../services/electrovalvula.service';
+import { MedicionService } from '../services/medicion.service';
 declare var require: any;
 require('highcharts/highcharts-more')(Highcharts);
 require('highcharts/modules/solid-gauge')(Highcharts);
@@ -18,45 +19,19 @@ require('highcharts/modules/solid-gauge')(Highcharts);
 export class DispositivoPage implements OnInit {
 
   public dispositivo: Dispositivo;
-  estadoElectrovalvula = true;
-  private valorObtenido=50;
+  estadoElectrovalvula: boolean;
+  private valorObtenido: number;
   public myChart;
   private chartOptions;
 
-  constructor(private router: ActivatedRoute, private dServ: DispositivoService, private lServ: LogsService, private evServ: ElectrovalvulaService) {
-    setTimeout(()=>{
-      console.log("Cambio el valor del sensor");
-      this.valorObtenido=60;
-      //llamo al update del chart para refrescar y mostrar el nuevo valor
-      this.myChart.update({series: [{
-          name: 'kPA',
-          data: [this.valorObtenido],
-          tooltip: {
-              valueSuffix: ' kPA'
-          }
-      }]});
-    },6000);
-/*     setInterval(() => {
-      const chart = Highcharts.charts[0];
-      if (chart) {
-          const point = chart.series[0].points[0],
-              inc = Math.round((Math.random() - 0.5) * 20);
-          let newVal = point.y + inc;
-          if (newVal < 0 || newVal > 200) {
-              newVal = point.y - inc;
-          }
-          point.update(newVal);
-      }
-    },3000);
- */   }
+  constructor(private router: ActivatedRoute, private dServ: DispositivoService, private medServ: MedicionService, private lServ: LogsService, private evServ: ElectrovalvulaService) { }
 
    ngOnInit() {
     // eslint-disable-next-line prefer-const
     let idDispositivo = this.router.snapshot.paramMap.get('id');
     this.dispositivo = this.dServ.getDispositivo(idDispositivo);
     this.estadoElectrovalvula = Boolean(this.evServ.getEstadoActualEV(this.dispositivo.electrovalvulaId));
-    console.log('Id: ' + idDispositivo);
-    console.log('Dispositivo Nombre: ' + this.dispositivo.nombre);
+    this.valorObtenido= this.medServ.getUltimaMedicionDispositivo(idDispositivo).valor;
   }
 
    ionViewDidEnter() {
