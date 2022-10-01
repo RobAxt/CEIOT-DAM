@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Medicion } from '../model/Medicion';
 
 
@@ -14,8 +15,12 @@ export class MedicionService {
     return this._http.get<Array<Medicion>>('http://localhost:8000/medicion/' + id + '/todas').toPromise();
   }
 
-  getUltimaMedicionDispositivo(id): Promise<Medicion> {
+  getUltimaMedicionByDispositivo(id): Promise<Medicion> {
     return this._http.get<Medicion>('http://localhost:8000/medicion/'+id).toPromise();
+  }
+
+  getLastMedByDisp(id): Observable<Medicion> {
+    return this._http.get<Medicion>('http://localhost:8000/medicion/'+id);
   }
 
   newEntrada(med: Medicion) {

@@ -9,6 +9,8 @@ import { ElectrovalvulaService } from '../services/electrovalvula.service';
 import { MedicionService } from '../services/medicion.service';
 import { Electrovalvula } from '../model/Electrovalvula';
 import { Medicion } from '../model/Medicion';
+import { NumberSymbol } from '@angular/common';
+import { Observable } from 'rxjs';
 declare var require: any;
 require('highcharts/highcharts-more')(Highcharts);
 require('highcharts/modules/solid-gauge')(Highcharts);
@@ -23,47 +25,51 @@ export class DispositivoPage implements OnInit {
   public dispositivo: Dispositivo;
   public electrovalvula: Electrovalvula;
   public medicion: Medicion;
-  private valorObtenido: number = 0;
+  public medicion$: Observable<Medicion>;
+  public valorObtenido: number = 0;
+  private timerId: any;
   public myChart;
   private chartOptions;
 
   constructor(private router: ActivatedRoute, private dServ: DispositivoService, private medServ: MedicionService, private lServ: LogsService, private evServ: ElectrovalvulaService) { }
 
-   ngOnInit() {
-    // eslint-disable-next-line prefer-const
+  ngOnInit() {
     let idDispositivo = this.router.snapshot.paramMap.get('id');
     this.leerDatos(idDispositivo);
- }
+  }
 
-   ionViewDidEnter() {
+  ionViewDidEnter() {
     this.generarChart();
     this.simulacionMedicion();
     this.refrescarDatos();
-   }
+  }
 
   async leerDatos(idDispositivo: string) {
     try{
       this.dispositivo = await this.dServ.getDispositivo(idDispositivo);
       this.electrovalvula = await this.evServ.getEV(idDispositivo);
-      console.log('Electrovalvula: ' + JSON.stringify(this.electrovalvula));
-      this.medicion = await this.medServ.getUltimaMedicionDispositivo(idDispositivo);
-      console.log('Valor medicion: ' + this.medicion.valor)
+      this.medicion = await this.medServ.getUltimaMedicionByDispositivo(idDispositivo);
       this.valorObtenido = Number(this.medicion.valor);
     }
     catch {
       console.error('Error al leer datos del backend');
     }
-    this.myChart.update({series: [{
-      name: 'kPA',
-      data: [this.valorObtenido],
-      tooltip: {
-          valueSuffix: ' kPA'
-      }
-    }]});
   }
 
 // refresco asincronico de la medición del dispositivo
-  refrescarDatos() {}
+  refrescarDatos() {
+    this.medicion$ = this.medServ.getLastMedByDisp(this.dispositivo.dispositivoId);
+    this.medicion$.subscribe( (med) => {
+      console.log('Observable Medicion valor: ' + med.valor)
+      this.myChart.update({series: [{
+        name: 'kPA',
+        data: [med.valor],
+        tooltip: {
+            valueSuffix: ' kPA'
+        }
+      }]});
+    });
+  }
 
   cambiarEstadoElectrovalvula() {
     this.electrovalvula.apertura = this.electrovalvula.apertura?0:1;
@@ -143,6 +149,35 @@ export class DispositivoPage implements OnInit {
     this.myChart = Highcharts.chart('highcharts', this.chartOptions );
   }
 
+  ionViewDidLeave() {
+    clearInterval(this.timerId);
+    console.log('Finaliza Simulacion');
+  }
+
 // Este método simula el envio periodico del dispositivo de los datos de medición.
-  simulacionMedicion() {}
+  simulacionMedicion(): void {
+    console.log('Comenzando Simulación');
+    this.timerId = setInterval( ()=> {
+      var inc: number, newVal: number;
+      var newMed: Medicion;
+
+      inc = Math.round((Math.random() - 0.5) * 100);
+      newVal = this.valorObtenido + inc;
+      if (newVal < 0 || newVal > 100) {
+          newVal =this.valorObtenido - inc;
+      }
+      console.log('nueva simulación: ' + newVal);
+
+      newMed = new Medicion(0, new Date, newVal, this.dispositivo.dispositivoId);
+      this.medServ.newEntrada(newMed);
+
+ /*      this.myChart.update({series: [{
+            name: 'kPA',
+            data: [newVal],
+            tooltip: {
+                valueSuffix: ' kPA'
+            }
+          }]}); */
+    }, 10000);
+  }
 }
