@@ -27,7 +27,8 @@ export class DispositivoPage implements OnInit {
   public medicion: Medicion;
   public medicion$: Observable<Medicion>;
   public valorObtenido: number = 0;
-  private timerId: any;
+  private simTimerId: any;
+  private refreshTimerId: any;
   public myChart;
   private chartOptions;
 
@@ -57,7 +58,7 @@ export class DispositivoPage implements OnInit {
   }
 
 // refresco asincronico de la medición del dispositivo
-  refrescarDatos() {
+/*   refrescarDatos() {
     this.medicion$ = this.medServ.getLastMedByDisp(this.dispositivo.dispositivoId);
     this.medicion$.subscribe( (med) => {
       console.log('Observable Medicion valor: ' + med.valor)
@@ -69,6 +70,21 @@ export class DispositivoPage implements OnInit {
         }
       }]});
     });
+  } */
+
+  refrescarDatos() {
+    this.refreshTimerId =  setInterval( async ()=> {
+      this.medicion = await this.medServ.getUltimaMedicionByDispositivo(this.dispositivo.dispositivoId);
+      this.valorObtenido = Number(this.medicion.valor);
+      console.log('Lectura Medicion Async: ' + this.medicion.valor)
+      this.myChart.update({series: [{
+        name: 'kPA',
+        data: [this.valorObtenido],
+        tooltip: {
+            valueSuffix: ' kPA'
+        }
+      }]});
+    },5000);
   }
 
   cambiarEstadoElectrovalvula() {
@@ -150,14 +166,15 @@ export class DispositivoPage implements OnInit {
   }
 
   ionViewDidLeave() {
-    clearInterval(this.timerId);
+    clearInterval(this.simTimerId);
     console.log('Finaliza Simulacion');
+    clearInterval(this.refreshTimerId);
   }
 
 // Este método simula el envio periodico del dispositivo de los datos de medición.
   simulacionMedicion(): void {
     console.log('Comenzando Simulación');
-    this.timerId = setInterval( ()=> {
+    this.simTimerId = setInterval( ()=> {
       var inc: number, newVal: number;
       var newMed: Medicion;
 
@@ -166,18 +183,11 @@ export class DispositivoPage implements OnInit {
       if (newVal < 0 || newVal > 100) {
           newVal =this.valorObtenido - inc;
       }
-      console.log('nueva simulación: ' + newVal);
+      console.log('Nueva Simulación: ' + newVal);
 
       newMed = new Medicion(0, new Date, newVal, this.dispositivo.dispositivoId);
       this.medServ.newEntrada(newMed);
 
- /*      this.myChart.update({series: [{
-            name: 'kPA',
-            data: [newVal],
-            tooltip: {
-                valueSuffix: ' kPA'
-            }
-          }]}); */
     }, 10000);
   }
 }
