@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Logs } from '../model/Logs';
 
@@ -5,10 +6,10 @@ import { Logs } from '../model/Logs';
   providedIn: 'root'
 })
 export class LogsService {
-  logs: Array<Logs> = new Array<Logs>();
+//  logs: Array<Logs> = new Array<Logs>();
 
-  constructor() {
-    const log1: Logs= new Logs(1,new Date,0,1);
+  constructor(private _http: HttpClient) {
+/*     const log1: Logs= new Logs(1,new Date,0,1);
     const log2: Logs= new Logs(2,new Date,1,1);
     const log3: Logs= new Logs(3,new Date,0,2);
     const log4: Logs= new Logs(4,new Date,1,2);
@@ -23,14 +24,19 @@ export class LogsService {
     this.logs.push(log5);
     this.logs.push(log6);
     this.logs.push(log7);
-    this.logs.push(log8);
+    this.logs.push(log8); */
    }
 
-  getLogsValvula(id):Logs[] {
-    return this.logs.filter(logs=> logs.electrovalvulaId==id);
+  getLogsValvula(id): Promise<Array<Logs>> {
+//    return this.logs.filter(logs=> logs.electrovalvulaId==id);
+    return this._http.get<Array<Logs>>('http://localhost:8000/log/' + id + '/todas').toPromise();
   }
 
   newEntrada(log: Logs) {
-    this.logs.push(log);
+//    this.logs.push(log);
+  let sqlFecha: string = log.fecha.getFullYear() + "-" + (log.fecha.getMonth() + 1) + "-" + log.fecha.getDate() + " " + log.fecha.getHours() + ":" + log.fecha.getMinutes() + ":" + log.fecha.getSeconds()
+  return this._http.post('http://localhost:8000/log/agregar',{apertura: log.apertura, fecha: sqlFecha, electrovalvulaId: log.electrovalvulaId} ).toPromise().then(
+  (result) => {console.log(result);}
+);
   }
 }

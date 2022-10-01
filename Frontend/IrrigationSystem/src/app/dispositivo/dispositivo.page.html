@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header *ngIf = "dispositivo && electrovalvula">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button routerLink="/">
@@ -9,12 +9,12 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf = "dispositivo && electrovalvula">
   <div id="highcharts" style="width: 100%; height: 300px;"></div>
   <br>
   <ion-button expand="block" shape="round" (click)="cambiarEstadoElectrovalvula()">
-    <p *ngIf="!estadoElectrovalvula"> Abrir Electroválvula</p>
-    <p *ngIf="estadoElectrovalvula" > Cerrar Electroválvula</p>
+    <p *ngIf="!electrovalvula.apertura"> Abrir Electroválvula</p>
+    <p *ngIf="electrovalvula.apertura" > Cerrar Electroválvula</p>
     <ion-icon slot="end" name="caret-forward"></ion-icon>
   </ion-button>
   <ion-button expand="block" shape="round"  routerLink="/medicion/{{dispositivo.dispositivoId}}" >

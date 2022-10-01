@@ -8,12 +8,18 @@ import { Dispositivo } from '../model/Dispositivo';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  listadoDispositivo: Dispositivo[];
+  listadoDispositivo: Array<Dispositivo> = new Array<Dispositivo>;
 
   constructor( public dispositivoServ: DispositivoService) {
   }
 
   ionViewDidEnter() {
-    this.listadoDispositivo=this.dispositivoServ.getDispositivos();
+    this.dispositivoServ.getDispositivos()
+      .then(lst=>{
+        this.listadoDispositivo=lst;
+      })
+      .catch(err=>{
+        console.error('Error al obtener datos del Dispositivo');
+      });
   }
 }

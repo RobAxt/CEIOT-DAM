@@ -1,7 +1,13 @@
 var express = require('express');
 var app = express();
 var PORT = 3000;
+var cors = require('cors');
+var corsConfig = {
+    origin:'*',
+    optionSuccessStatus:200
+}
 
+app.use(cors(corsConfig));
 //ruteo dispositivo
 var routerDisp = require('./routes/dispositivo');
 //ruteo medicion

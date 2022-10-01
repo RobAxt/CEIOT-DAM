@@ -7,6 +7,8 @@ import { LogsService } from '../services/logs.service';
 import { Logs } from '../model/Logs';
 import { ElectrovalvulaService } from '../services/electrovalvula.service';
 import { MedicionService } from '../services/medicion.service';
+import { Electrovalvula } from '../model/Electrovalvula';
+import { Medicion } from '../model/Medicion';
 declare var require: any;
 require('highcharts/highcharts-more')(Highcharts);
 require('highcharts/modules/solid-gauge')(Highcharts);
@@ -19,8 +21,9 @@ require('highcharts/modules/solid-gauge')(Highcharts);
 export class DispositivoPage implements OnInit {
 
   public dispositivo: Dispositivo;
-  estadoElectrovalvula: boolean;
-  private valorObtenido: number;
+  public electrovalvula: Electrovalvula;
+  public medicion: Medicion;
+  private valorObtenido: number = 0;
   public myChart;
   private chartOptions;
 
@@ -29,20 +32,42 @@ export class DispositivoPage implements OnInit {
    ngOnInit() {
     // eslint-disable-next-line prefer-const
     let idDispositivo = this.router.snapshot.paramMap.get('id');
-    this.dispositivo = this.dServ.getDispositivo(idDispositivo);
-    this.estadoElectrovalvula = Boolean(this.evServ.getEstadoActualEV(this.dispositivo.electrovalvulaId));
-    this.valorObtenido= this.medServ.getUltimaMedicionDispositivo(idDispositivo).valor;
+    this.leerDatos(idDispositivo);
+  //  this.estadoElectrovalvula = Boolean(this.evServ.getEstadoActualEV(this.dispositivo.electrovalvulaId));
+  //  this.valorObtenido= this.medServ.getUltimaMedicionDispositivo(idDispositivo).valor;
   }
 
    ionViewDidEnter() {
     this.generarChart();
    }
 
+  async leerDatos(idDispositivo: string) {
+    try{
+      this.dispositivo = await this.dServ.getDispositivo(idDispositivo);
+      this.electrovalvula = await this.evServ.getEV(idDispositivo);
+      console.log('Electrovalvula: ' + JSON.stringify(this.electrovalvula));
+      this.medicion = await this.medServ.getUltimaMedicionDispositivo(idDispositivo);
+      console.log('Valor medicion: ' + this.medicion.valor)
+      this.valorObtenido = Number(this.medicion.valor);
+    }
+    catch {
+      console.error('Error al leer datos del backend');
+    }
+    this.myChart.update({series: [{
+      name: 'kPA',
+      data: [this.valorObtenido],
+      tooltip: {
+          valueSuffix: ' kPA'
+      }
+    }]});
+  }
+
   cambiarEstadoElectrovalvula() {
-    this.estadoElectrovalvula = !this.estadoElectrovalvula;
-    console.log('Estado de la Electrovalvula del dispositovo' + this.dispositivo.nombre + ' es ' + this.estadoElectrovalvula);
-    let log: Logs = new Logs(0, new Date, Number(this.estadoElectrovalvula), this.dispositivo.electrovalvulaId);
+    this.electrovalvula.apertura = this.electrovalvula.apertura?0:1;
+    console.log('Estado de la Electrovalvula del dispositovo' + this.dispositivo.nombre + ' es ' + this.electrovalvula.apertura);
+    let log: Logs = new Logs(0, new Date, Number(this.electrovalvula.apertura), this.dispositivo.electrovalvulaId);
     this.lServ.newEntrada(log);
+    this.evServ.updateApertura(this.electrovalvula);
   }
 
   generarChart() {
@@ -56,7 +81,7 @@ export class DispositivoPage implements OnInit {
           height: '300px'
         }
         ,title: {
-          text: [this.dispositivo.nombre]
+          text:'Presión de Capilar'
         }
         ,credits:{enabled:false}
         ,pane: {

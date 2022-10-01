@@ -1,4 +1,5 @@
 var mysql = require('mysql');
+
 var configMysql = {
     connectionLimit: 10,
     host: 'mysql-server',
@@ -7,10 +8,15 @@ var configMysql = {
     password: 'userpass',
     database: 'DAM'
 }
+
 var pool = mysql.createPool(configMysql);
+
 pool.getConnection((err, connection) => {
     if (err) {
         switch (err.code) {
+            case 'ER_ACCESS_DENIED':
+                console.error('Usuario o Password incorrecto');
+                break;
             case 'PROTOCOL_CONNECTION_LOST':
                 console.error('La conexion a la DB se cerró.');
                 break;
@@ -19,6 +25,9 @@ pool.getConnection((err, connection) => {
                 break;
             case 'ECONNREFUSED':
                 console.error('La conexion fue rechazada');
+            default:
+                console.error(err.code);
+                break;
         }
         if (connection) {
             connection.release();
@@ -26,4 +35,5 @@ pool.getConnection((err, connection) => {
         return;
     }
 });
+
 module.exports = pool;

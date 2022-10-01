@@ -19,8 +19,19 @@ export class MedicionPage implements OnInit {
 
   ngOnInit() {
     let idDispositivo = this.router.snapshot.paramMap.get('id');
-    this.dispositivo = this.dServ.getDispositivo(idDispositivo);
-    this.mediciones = this.medServ.getMedicionDispositivo(idDispositivo);
+    this.leerDatos(idDispositivo);
+  //  this.dispositivo = this.dServ.getDispositivo(idDispositivo);
+  //  this.mediciones = this.medServ.getMedicionDispositivo(idDispositivo);
+  }
+
+  async leerDatos(idDispositivo: string) {
+    try{
+      this.dispositivo = await this.dServ.getDispositivo(idDispositivo);
+      this.mediciones = await this.medServ.getMedicionDispositivo(idDispositivo);
+    }
+    catch {
+      console.error('Error al leer datos del backend');
+    }
   }
 
 }

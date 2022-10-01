@@ -1,19 +1,19 @@
 export class Electrovalvula{
-  private _evId: number;
+  private _electrovalvulaId: number;
   private _nombre: string;
   private _apertura: number;
 
-  constructor(evId: number, nombre: string, apertura: number){
-      this._evId=evId;
+  constructor(electrovalvulaId: number, nombre: string, apertura: number){
+      this._electrovalvulaId=electrovalvulaId;
       this._nombre=nombre;
       this._apertura=apertura;
   }
 
-  public get evId(): number {
-      return this._evId;
+  public get electrovalvulaId(): number {
+      return this._electrovalvulaId;
   }
-  public set evId(value: number) {
-      this._evId = value;
+  public set electrovalvulaId(value: number) {
+      this._electrovalvulaId = value;
   }
 
   public get nombre(): string {

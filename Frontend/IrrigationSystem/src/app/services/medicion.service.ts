@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Medicion } from '../model/Medicion';
 
@@ -6,10 +7,10 @@ import { Medicion } from '../model/Medicion';
   providedIn: 'root'
 })
 export class MedicionService {
-  mediciones: Array<Medicion> = new Array<Medicion>();
+  // mediciones: Array<Medicion> = new Array<Medicion>();
 
-  constructor() {
-    const med1: Medicion= new Medicion(1,new Date,20,1);
+  constructor(private _http: HttpClient) {
+/*     const med1: Medicion= new Medicion(1,new Date,20,1);
     const med2: Medicion= new Medicion(2,new Date,61,1);
     const med3: Medicion= new Medicion(3,new Date,25,2);
     const med4: Medicion= new Medicion(4,new Date,51,2);
@@ -24,13 +25,15 @@ export class MedicionService {
     this.mediciones.push(med5);
     this.mediciones.push(med6);
     this.mediciones.push(med7);
-    this.mediciones.push(med8);
+    this.mediciones.push(med8); */
    }
 
-  getMedicionDispositivo(id):Medicion[] {
-    return this.mediciones.filter(mediciones=> mediciones.dispositivoId==id);
+  getMedicionDispositivo(id): Promise<Array<Medicion>> {
+//    return this.mediciones.filter(mediciones=> mediciozes.dispositivoId==id);
+    return this._http.get<Array<Medicion>>('http://localhost:8000/medicion/' + id + '/todas').toPromise();
   }
-  getUltimaMedicionDispositivo(id): Medicion {
-    return this.mediciones.filter(mediciones=> mediciones.dispositivoId==id)[0];
+  getUltimaMedicionDispositivo(id): Promise<Medicion> {
+//    return this.mediciones.filter(mediciones=> mediciones.dispositivoId==id)[0];
+return this._http.get<Medicion>('http://localhost:8000/medicion/'+id).toPromise();
   }
 }
