@@ -20,8 +20,6 @@ export class LogPage implements OnInit {
   ngOnInit() {
     let idDispositivo = this.router.snapshot.paramMap.get('id');
     this.leerDatos(idDispositivo);
-  //  this.dispositivo = this.dServ.getDispositivo(idDispositivo);
-  //  this.logs = this.lServ.getLogsValvula(this.dispositivo.electrovalvulaId);
   }
 
   async leerDatos(idDispositivo: string) {

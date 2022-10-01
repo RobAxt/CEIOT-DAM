@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/member-ordering */
-/* eslint-disable no-underscore-dangle */
 export class Dispositivo{
   private _dispositivoId: number;
   private _nombre: string;

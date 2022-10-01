@@ -33,12 +33,12 @@ export class DispositivoPage implements OnInit {
     // eslint-disable-next-line prefer-const
     let idDispositivo = this.router.snapshot.paramMap.get('id');
     this.leerDatos(idDispositivo);
-  //  this.estadoElectrovalvula = Boolean(this.evServ.getEstadoActualEV(this.dispositivo.electrovalvulaId));
-  //  this.valorObtenido= this.medServ.getUltimaMedicionDispositivo(idDispositivo).valor;
-  }
+ }
 
    ionViewDidEnter() {
     this.generarChart();
+    this.simulacionMedicion();
+    this.refrescarDatos();
    }
 
   async leerDatos(idDispositivo: string) {
@@ -61,6 +61,9 @@ export class DispositivoPage implements OnInit {
       }
     }]});
   }
+
+// refresco asincronico de la medición del dispositivo
+  refrescarDatos() {}
 
   cambiarEstadoElectrovalvula() {
     this.electrovalvula.apertura = this.electrovalvula.apertura?0:1;
@@ -140,6 +143,6 @@ export class DispositivoPage implements OnInit {
     this.myChart = Highcharts.chart('highcharts', this.chartOptions );
   }
 
-
-
+// Este método simula el envio periodico del dispositivo de los datos de medición.
+  simulacionMedicion() {}
 }

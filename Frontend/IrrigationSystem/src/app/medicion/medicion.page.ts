@@ -20,8 +20,6 @@ export class MedicionPage implements OnInit {
   ngOnInit() {
     let idDispositivo = this.router.snapshot.paramMap.get('id');
     this.leerDatos(idDispositivo);
-  //  this.dispositivo = this.dServ.getDispositivo(idDispositivo);
-  //  this.mediciones = this.medServ.getMedicionDispositivo(idDispositivo);
   }
 
   async leerDatos(idDispositivo: string) {
