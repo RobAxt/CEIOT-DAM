@@ -9,8 +9,7 @@ import { ElectrovalvulaService } from '../services/electrovalvula.service';
 import { MedicionService } from '../services/medicion.service';
 import { Electrovalvula } from '../model/Electrovalvula';
 import { Medicion } from '../model/Medicion';
-import { NumberSymbol } from '@angular/common';
-import { Observable } from 'rxjs';
+
 declare var require: any;
 require('highcharts/highcharts-more')(Highcharts);
 require('highcharts/modules/solid-gauge')(Highcharts);
@@ -25,7 +24,6 @@ export class DispositivoPage implements OnInit {
   public dispositivo: Dispositivo;
   public electrovalvula: Electrovalvula;
   public medicion: Medicion;
-  public medicion$: Observable<Medicion>;
   public valorObtenido: number = 0;
   private simTimerId: any;
   private refreshTimerId: any;
@@ -58,20 +56,6 @@ export class DispositivoPage implements OnInit {
   }
 
 // refresco asincronico de la medición del dispositivo
-/*   refrescarDatos() {
-    this.medicion$ = this.medServ.getLastMedByDisp(this.dispositivo.dispositivoId);
-    this.medicion$.subscribe( (med) => {
-      console.log('Observable Medicion valor: ' + med.valor)
-      this.myChart.update({series: [{
-        name: 'kPA',
-        data: [med.valor],
-        tooltip: {
-            valueSuffix: ' kPA'
-        }
-      }]});
-    });
-  } */
-
   refrescarDatos() {
     this.refreshTimerId =  setInterval( async ()=> {
       this.medicion = await this.medServ.getUltimaMedicionByDispositivo(this.dispositivo.dispositivoId);
@@ -89,7 +73,7 @@ export class DispositivoPage implements OnInit {
 
   cambiarEstadoElectrovalvula() {
     this.electrovalvula.apertura = this.electrovalvula.apertura?0:1;
-    console.log('Estado de la Electrovalvula del dispositovo' + this.dispositivo.nombre + ' es ' + this.electrovalvula.apertura);
+    console.log('Estado de la Electrovalvula del dispositivo ' + this.dispositivo.nombre + ' es ' + this.electrovalvula.apertura);
     let log: Logs = new Logs(0, new Date, Number(this.electrovalvula.apertura), this.dispositivo.electrovalvulaId);
     this.lServ.newEntrada(log);
     this.evServ.updateApertura(this.electrovalvula);

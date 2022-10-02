@@ -21,10 +21,6 @@ export class MedicionService {
     return this._http.get<Medicion>('http://localhost:8000/medicion/'+id).toPromise();
   }
 
-  getLastMedByDisp(id): Observable<Medicion> {
-    return this._http.get<Medicion>('http://localhost:8000/medicion/'+id);
-  }
-
   // inserta una nueva medicion, solo para la simulación.
   newEntrada(med: Medicion) {
     let sqlFecha: string = med.fecha.getFullYear() + "-" + (med.fecha.getMonth() + 1) + "-" + med.fecha.getDate() + " " + med.fecha.getHours() + ":" + med.fecha.getMinutes() + ":" + med.fecha.getSeconds()
