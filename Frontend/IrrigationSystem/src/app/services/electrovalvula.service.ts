@@ -10,7 +10,7 @@ export class ElectrovalvulaService {
   constructor(private _http: HttpClient) { }
 
   // con el Id del Dispositovo obtengo la electrovalvula asociada.
-  getEV(idDispositivo): Promise<Electrovalvula> {
+  getEV(idDispositivo: number): Promise<Electrovalvula> {
     return this._http.get<Electrovalvula>('http://localhost:8000/electrovalvula/'+idDispositivo).toPromise();
   }
 

@@ -1,4 +1,4 @@
-<ion-header *ngIf = "dispositivo">
+<ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button routerLink="/">
@@ -9,7 +9,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf = "dispositivo && electrovalvula">
+<ion-content>
   <div id="highcharts" style="width: 100%; height: 300px;"></div>
   <br>
   <ion-button expand="block" shape="round" (click)="cambiarEstadoElectrovalvula()">

@@ -4,7 +4,7 @@ export class Dispositivo{
   private _ubicacion: string;
   private _electrovalvulaId: number;
 
-  constructor(dispositivo: any, nombre: any, ubicacion: any, electrovalvulaId: any){
+  constructor(dispositivo: number, nombre: string, ubicacion: string, electrovalvulaId: number){
       this._dispositivoId=dispositivo;
       this._nombre=nombre;
       this._ubicacion=ubicacion;

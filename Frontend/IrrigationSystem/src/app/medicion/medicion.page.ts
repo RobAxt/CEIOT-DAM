@@ -12,17 +12,17 @@ import { Medicion } from '../model/Medicion';
 })
 export class MedicionPage implements OnInit {
 
-  public dispositivo: Dispositivo;
-  public mediciones:  Array<Medicion>;
+  public dispositivo: Dispositivo = new Dispositivo(0,'','',0);;
+  public mediciones:  Array<Medicion> = new Array<Medicion>;;
 
-  constructor(private router: ActivatedRoute, private dServ: DispositivoService, private medServ: MedicionService) { }
-
-  ngOnInit() {
-    let idDispositivo = this.router.snapshot.paramMap.get('id');
+  constructor(private router: ActivatedRoute, private dServ: DispositivoService, private medServ: MedicionService) {
+    let idDispositivo: number = parseInt(this.router.snapshot.paramMap.get('id'));
     this.leerDatos(idDispositivo);
-  }
+   }
 
-  async leerDatos(idDispositivo: string) {
+  ngOnInit() { }
+
+  async leerDatos(idDispositivo: number) {
     try{
       this.dispositivo = await this.dServ.getDispositivo(idDispositivo);
       this.mediciones = await this.medServ.getMedicionDispositivo(idDispositivo);

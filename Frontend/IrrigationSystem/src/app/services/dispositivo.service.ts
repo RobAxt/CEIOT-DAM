@@ -10,7 +10,7 @@ export class DispositivoService {
   constructor(private _http: HttpClient) { }
 
   //devuelve un dispositivo con id
-  getDispositivo(id): Promise<Dispositivo> {
+  getDispositivo(id: number): Promise<Dispositivo> {
     return this._http.get<Dispositivo>('http://localhost:8000/dispositivo/'+id).toPromise();
   }
 

@@ -21,29 +21,30 @@ require('highcharts/modules/solid-gauge')(Highcharts);
 })
 export class DispositivoPage implements OnInit {
 
-  public dispositivo: Dispositivo;
-  public electrovalvula: Electrovalvula;
-  public medicion: Medicion;
+  public dispositivo: Dispositivo = new Dispositivo(0,'','',0);
+  public electrovalvula: Electrovalvula = new Electrovalvula(0,'',0);
+  public medicion: Medicion = new Medicion(0,new Date,0,0);
   public valorObtenido: number = 0;
   private simTimerId: any;
   private refreshTimerId: any;
   public myChart;
   private chartOptions;
 
-  constructor(private router: ActivatedRoute, private dServ: DispositivoService, private medServ: MedicionService, private lServ: LogsService, private evServ: ElectrovalvulaService) { }
-
-  ngOnInit() {
-    let idDispositivo = this.router.snapshot.paramMap.get('id');
+  constructor(private router: ActivatedRoute, private dServ: DispositivoService, private medServ: MedicionService, private lServ: LogsService, private evServ: ElectrovalvulaService) {
+    let idDispositivo: number = parseInt(this.router.snapshot.paramMap.get('id'));
     this.leerDatos(idDispositivo);
-  }
+   }
+
+  ngOnInit() { }
 
   ionViewDidEnter() {
+    console.log(this.dispositivo.nombre);
     this.generarChart();
     this.simulacionMedicion();
     this.refrescarDatos();
   }
 
-  async leerDatos(idDispositivo: string) {
+  async leerDatos(idDispositivo: number) {
     try{
       this.dispositivo = await this.dServ.getDispositivo(idDispositivo);
       this.electrovalvula = await this.evServ.getEV(idDispositivo);

@@ -10,7 +10,7 @@ export class LogsService {
   constructor(private _http: HttpClient) { }
 
   //devuelve todos los logs de una electrovalvula, recibe el id de la electrovalvula
-  getLogsValvula(id): Promise<Array<Logs>> {
+  getLogsValvula(id: number): Promise<Array<Logs>> {
     return this._http.get<Array<Logs>>('http://localhost:8000/log/' + id + '/todas').toPromise();
   }
 

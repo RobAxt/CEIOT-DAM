@@ -12,17 +12,19 @@ import { LogsService } from '../services/logs.service';
 })
 export class LogPage implements OnInit {
 
-  public dispositivo: Dispositivo;
-  public logs: Array<Logs>;
+  public dispositivo: Dispositivo = new Dispositivo(0,'','',0);
+  public logs: Array<Logs> = new Array<Logs>;
 
-  constructor(private router: ActivatedRoute, private dServ: DispositivoService, private lServ: LogsService) { }
-
-  ngOnInit() {
-    let idDispositivo = this.router.snapshot.paramMap.get('id');
+  constructor(private router: ActivatedRoute, private dServ: DispositivoService, private lServ: LogsService) {
+    let idDispositivo: number = parseInt(this.router.snapshot.paramMap.get('id'));
     this.leerDatos(idDispositivo);
-  }
+   }
 
-  async leerDatos(idDispositivo: string) {
+  ngOnInit() { }
+
+  ionViewDidEnter() { }
+
+  async leerDatos(idDispositivo: number) {
     try{
       this.dispositivo = await this.dServ.getDispositivo(idDispositivo);
       this.logs = await this.lServ.getLogsValvula(this.dispositivo.electrovalvulaId);
